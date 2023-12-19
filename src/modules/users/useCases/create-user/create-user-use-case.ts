@@ -1,6 +1,7 @@
 import { User } from "../../entities/user-entity"
 import { ParameterNotFoundError } from "../../../../error/parameter-not-found.error"
 import { IUserRepository } from "../../repository/user-repository"
+import { CustomError } from "../../../../error/custom-error"
 
 type UserRequest =  {
   name: string
@@ -21,7 +22,7 @@ export class CreateUserUseCase {
     const userAlreadyExists = await this.userRepository.findByUserName(data.username)
 
     if(userAlreadyExists) {
-      throw new Error('Username already exists.')
+      throw new CustomError('Username already exists.', 400, 'USER_EXISTS_ERROR')
     }
 
     const user = User.create(data)

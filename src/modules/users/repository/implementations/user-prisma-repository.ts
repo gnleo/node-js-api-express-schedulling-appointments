@@ -1,12 +1,25 @@
+import { prisma } from "../../../../infra/database/prisma-config";
 import { User } from "../../entities/user-entity";
 import { IUserRepository } from "../user-repository";
 
 export class UserPrismaRepository implements IUserRepository{
-  findByUserName(userName: string): Promise<User> {
-    throw new Error("Method not implemented.");
+  async findByUserName(userName: string): Promise<User| undefined |null> {
+    const user = await prisma.user.findUnique({
+      where: {
+        username: userName
+    }})
+
+    return user
   }
-  save(data: User): Promise<User> {
-    throw new Error("Method not implemented.");
+
+  async save(data: User): Promise<User> {
+    const user = await prisma.user.create({data: {
+      name: data.name,
+      username: data.username,
+      password: data.password
+    }})
+
+    return user
   }
 
 }
