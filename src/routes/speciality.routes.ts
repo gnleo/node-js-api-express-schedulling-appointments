@@ -4,6 +4,6 @@ import { createSpecialialityController } from '../modules/specialities/useCases/
 
 const specialityRouter = Router()
 
-specialityRouter.post('/users', async (req, res) => await createSpecialialityController.handle(req, res))
+specialityRouter.post('/specialities', async (req, res) => await createSpecialialityController.handle(req, res))
 
 export {specialityRouter}
