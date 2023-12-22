@@ -7,4 +7,7 @@ export class PasswordBcrypt implements IPasswordCrypto {
     return bcrypt.hash(password, 10)
   }
 
+  async compare(password: string, passwordHash: string) {
+    return bcrypt.compare(password, passwordHash)
+  }
 }
