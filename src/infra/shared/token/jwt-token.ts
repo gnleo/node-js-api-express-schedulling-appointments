@@ -1,8 +1,9 @@
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import { createHmac } from "crypto"
 
 import { IToken } from "./token";
 import { User } from "../../../modules/users/entities/user-entity";
+import { logger } from "../../../utils/logger";
 
 export class JWTToken implements IToken {
 
@@ -14,6 +15,16 @@ export class JWTToken implements IToken {
       subject: id,
       expiresIn: '1m'
     })
+  }
+
+  async validate(token: string) {
+    try {
+      verify(token, this.TOKEN_SECRET_CRYPTO)
+      return true
+    } catch (error: any) {
+      logger.error(error.stack)
+      return false
+    }
   }
 
 }
