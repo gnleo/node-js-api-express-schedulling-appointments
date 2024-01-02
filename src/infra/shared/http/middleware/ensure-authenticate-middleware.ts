@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { CustomError } from "../../../../error/custom-error";
 import { JWTToken } from "../../token/jwt-token";
 
 
@@ -16,9 +15,10 @@ export const ensureAuthenticate = async (req: Request, res: Response, next: Next
     return res.status(401).json({err: 'Token is missing.'})
   }
 
-  const verifyToken = await new JWTToken().validate(token)
+  const verifyToken = new JWTToken().validate(token)
 
   if(verifyToken){
+    req.userId = verifyToken.sub
     return next()
   }
 
