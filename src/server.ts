@@ -1,3 +1,4 @@
+import cors from 'cors'
 import express from 'express'
 import { userRouter } from './routes/user-routes'
 import { specialityRouter } from './routes/speciality.routes'
@@ -8,6 +9,7 @@ import swaggerDocument from '../swagger.json'
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
