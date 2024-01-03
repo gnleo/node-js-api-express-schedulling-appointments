@@ -1,5 +1,5 @@
 import {test, expect, describe} from 'vitest'
-import { Doctor } from '../entities/doctor-entity'
+import { Doctor } from '../doctor-entity'
 
 describe('DOCTOR ENTITY', () => {
   test('Should be able to create a new doctor', () => {

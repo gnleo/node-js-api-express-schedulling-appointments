@@ -4,6 +4,7 @@ import { CustomError } from "../../../error/custom-error"
 export type DoctorProps = {
   id?: string
   crm: string
+  email: string
   userId: string
   specialityId: string
 }
@@ -11,6 +12,7 @@ export type DoctorProps = {
 export class Doctor {
   id?: string
   crm: string
+  email: string
   userId: string
   specialityId: string
 
@@ -24,8 +26,13 @@ export class Doctor {
       throw new CustomError('CRM length is incorrect.')
     }
 
+    if(!props.email) {
+      throw new CustomError('Email is required.')
+    }
+
     this.id = randomUUID()
     this.crm = props.crm
+    this.email = props.email
     this.userId = props.userId
     this.specialityId = props.specialityId
   }

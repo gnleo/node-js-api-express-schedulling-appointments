@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto"
+import { ParameterNotFoundError } from "../../../error/parameter-not-found.error"
 
 type IUser = {
   name: string
@@ -14,6 +15,10 @@ export class User {
   isAdmin: boolean
 
   private constructor(props: IUser){
+    if(!props.username || !props.password){
+      throw new ParameterNotFoundError('Username/password is required.', 422)
+    }
+
     this.id = randomUUID()
     this.name = props.name
     this.username = props.username
