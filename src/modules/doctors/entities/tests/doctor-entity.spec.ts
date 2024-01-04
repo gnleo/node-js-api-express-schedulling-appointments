@@ -4,6 +4,7 @@ import { Doctor } from '../doctor-entity'
 describe('DOCTOR ENTITY', () => {
   test('Should be able to create a new doctor', () => {
     const doctor = Doctor.create({
+      email: 'email@test.com',
       crm: '123456',
       userId: 'user_id',
       specialityId: 'speciality_id'
@@ -17,6 +18,7 @@ describe('DOCTOR ENTITY', () => {
   test('Should not be able to create a new doctor with CRM invalid', () => {
     expect(() => {
       Doctor.create({
+      email: 'email@test.com',
       crm: '',
       userId: 'user_id',
       specialityId: 'speciality_id'})
@@ -26,6 +28,7 @@ describe('DOCTOR ENTITY', () => {
   test('Should not be able to create a new doctor with CRM length invalid', () => {
     expect(() => {
       Doctor.create({
+        email: 'email@test.com',
         crm: '123',
         userId: 'user_id',
         specialityId: 'speciality_id'})
