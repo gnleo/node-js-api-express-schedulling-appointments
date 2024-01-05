@@ -19,4 +19,8 @@ export class SpecialityPrismaRepository implements ISpecialityRepository {
     return await prisma.speciality.findUnique({ where: {name}})
   }
 
+  async findById(specialityId: string): Promise<Speciality | null> {
+    return await prisma.speciality.findUnique({where: {id: specialityId}}) 
+  }
+
 }

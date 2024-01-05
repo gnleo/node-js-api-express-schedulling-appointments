@@ -1,9 +1,24 @@
-import {describe, test, expect} from 'vitest'
+import {describe, test, expect, beforeAll} from 'vitest'
 import { CreateDoctorRequest, CreateDoctorUseCase } from '../create-doctor-use-case'
-import { randomUUID } from 'crypto'
 import { UserMemoryRepository } from '../../../../users/repository/implementations/user-memory-repository'
 import { DoctorMemoryRepository } from '../../../repository/implementations/doctor-memory-repository'
+import { SpecialityMemoryRepository } from '../../../../specialities/repository/implementations/speciality-memory-repository'
+import { ISpecialityRepository } from '../../../../specialities/repository/speciality-repository'
+import { Speciality } from '../../../../specialities/entities/speciality-entity'
 
+
+let specialityRepository: ISpecialityRepository
+let speciality: Speciality
+
+beforeAll(async () => {
+  specialityRepository = new SpecialityMemoryRepository()
+  speciality = Speciality.create({
+    name: 'nameSpecialityTest',
+    description: 'descriptionSpecialityTest'
+  })
+  
+  await specialityRepository.save(speciality)
+})
 
 describe('🥼 Create a doctor use case', () => {
   // Deve ser possível criar uma nova instância de doutor
@@ -14,13 +29,13 @@ describe('🥼 Create a doctor use case', () => {
       password: 'passwordTest',
       email: 'email@test.com',
       crm: '123456',
-      specilityId: randomUUID(),
+      specilityId: speciality.id
     }
 
     const userRepository = new UserMemoryRepository()
     const doctorRepository = new DoctorMemoryRepository()
 
-    const createDoctorUseCase = new CreateDoctorUseCase(userRepository, doctorRepository)
+    const createDoctorUseCase = new CreateDoctorUseCase(userRepository, doctorRepository, specialityRepository)
     const doctorCreated = await createDoctorUseCase.execute(doctorMock)
 
     expect(doctorCreated).toHaveProperty('id')
@@ -35,13 +50,13 @@ describe('🥼 Create a doctor use case', () => {
       password: 'passwordTest',
       email: 'email@test.com',
       crm: '12345',
-      specilityId: randomUUID(),
+      specilityId: speciality.id
     }
 
     const userRepository = new UserMemoryRepository()
     const doctorRepository = new DoctorMemoryRepository()
 
-    const createDoctorUseCase = new CreateDoctorUseCase(userRepository, doctorRepository)
+    const createDoctorUseCase = new CreateDoctorUseCase(userRepository, doctorRepository, specialityRepository)
     
     expect(async () => {
       await createDoctorUseCase.execute(doctorMock)
@@ -56,13 +71,13 @@ describe('🥼 Create a doctor use case', () => {
       password: 'passwordTest',
       email: 'email@test.com',
       crm: '123456',
-      specilityId: randomUUID(),
+      specilityId: speciality.id
     }
 
     const userRepository = new UserMemoryRepository()
     const doctorRepository = new DoctorMemoryRepository()
 
-    const createDoctorUseCase = new CreateDoctorUseCase(userRepository, doctorRepository)
+    const createDoctorUseCase = new CreateDoctorUseCase(userRepository, doctorRepository, specialityRepository)
     await createDoctorUseCase.execute(doctorMock)
 
     const newDoctorMockDuplicated: CreateDoctorRequest = {
@@ -71,7 +86,7 @@ describe('🥼 Create a doctor use case', () => {
       password: 'passwordTest2',
       email: 'email2@test.com',
       crm: '123456',
-      specilityId: randomUUID(),
+      specilityId: speciality.id
     }
 
     expect(async () => {
