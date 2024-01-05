@@ -20,7 +20,7 @@ beforeAll(async () => {
   await specialityRepository.save(speciality)
 })
 
-describe('🥼 Create a doctor use case', () => {
+describe('🥼 Doctor use case', () => {
   // Deve ser possível criar uma nova instância de doutor
   test('Should be able to create a new doctor', async () => {
     const doctorMock: CreateDoctorRequest = {

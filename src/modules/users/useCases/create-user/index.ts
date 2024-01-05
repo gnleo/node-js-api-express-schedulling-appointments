@@ -3,7 +3,6 @@ import { UserPrismaRepository } from "../../repository/implementations/user-pris
 import { CreateUserController } from "./create-user-controller";
 
 const userPrismaRepository = new UserPrismaRepository()
-const passwordCrypto = new PasswordBcrypt()
-const createUserController = new CreateUserController(userPrismaRepository, passwordCrypto)
+const createUserController = new CreateUserController(userPrismaRepository)
 
 export { createUserController }
