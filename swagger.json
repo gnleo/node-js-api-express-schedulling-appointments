@@ -59,6 +59,29 @@
                     }
                 }
             }
+        },
+        "/doctors": {
+            "post": {
+                "tags": ["Doctor"],
+                "description": "Cadastro de um médico",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DoctorRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Médico criado com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro de cadastro"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -116,6 +139,42 @@
                         "type": "string",
                         "description": "Senha de autenticação do usuário",
                         "example": "passwordSample"
+                    }
+                }
+            },
+            "DoctorRequest": {
+                "type": "object", 
+                "properties": {
+                    "crm": {
+                        "type": "string",
+                        "description": "Número de registro do médico",
+                        "example": "123456",
+                        "length": 6
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "E-mail do médico",
+                        "example": "email@email.com.br"
+                    },
+                    "username": {
+                        "type": "string",
+                        "description": "UserName do médico",
+                        "example": "userName"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Nome do médico",
+                        "example": "Nome"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "Senha do médico",
+                        "example": "password"
+                    },
+                    "specilityId": {
+                        "type": "string",
+                        "description": "Especialidade do médico",
+                        "format": "uuid"
                     }
                 }
             }
