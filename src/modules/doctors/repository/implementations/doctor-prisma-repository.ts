@@ -13,4 +13,13 @@ export class DoctorPrismaRepository implements IDoctorRepository {
     return doctor
   }
 
+  async findByUserId(userId: string): Promise<Doctor | null> {
+    const doctor = await prisma.doctor.findUnique({where: {userId}})
+    return doctor
+  }
+
+  async findById(id: string): Promise<Doctor | null> {
+    const doctor = await prisma.doctor.findUnique({where: {id}})
+    return doctor
+  }
 }

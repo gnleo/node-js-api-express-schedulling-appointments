@@ -12,4 +12,12 @@ export class DoctorMemoryRepository implements IDoctorRepository {
   async findByCRM(crm: string): Promise<Doctor | null> {
     return this.items.find(doctor => doctor.crm === crm) || null
   }
+
+  async findByUserId(userId: string): Promise<Doctor | null> {
+    return this.items.find(doctor => doctor.userId === userId) || null
+  }
+  
+  async findById(id: string): Promise<Doctor | null> {
+    return this.items.find(doctor => doctor.id === id) || null
+  }
 }
