@@ -3,6 +3,7 @@ import { describe, test, expect, beforeAll } from "vitest";
 import { CreateDoctorInfoUseCase, DoctorInfoRequest } from "../create-doctor-info-use-case";
 import { IDoctorRepository } from "../../../repository/doctor-repository";
 import { DoctorMemoryRepository } from "../../../repository/implementations/doctor-memory-repository";
+import { randomUUID } from "crypto";
 
 describe('🥼ℹ️ Doctor info useCase', () => {
   let doctorRepository: IDoctorRepository
@@ -21,9 +22,83 @@ describe('🥼ℹ️ Doctor info useCase', () => {
     
     const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository)
     
-
     expect(async () => {
       await createDoctorInfoUseCase.execute(doctorInfo, 'INVALID_USER_ID')
     }).rejects.toThrow('Doctor does not exists.')
+  })
+  
+  test('Should not be able to create a doctor info if endAt is before startAt', async () => {
+
+    const userId = randomUUID()
+    await doctorRepository.save({
+      crm: '111111',
+      email: 'email@test.com',
+      id: randomUUID(),
+      specialityId: randomUUID(),
+      userId
+    })
+
+    const doctorInfo: DoctorInfoRequest = {
+      startAt: dayjs().startOf('day').add(15, 'hour').format('HH:mm'),
+      endAt: dayjs().startOf('day').add(12, 'hour').format('HH:mm'),
+      price: 150,
+      duration: 30,
+    }
+    
+    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository)
+
+    expect(async () => {
+      await createDoctorInfoUseCase.execute(doctorInfo, userId)
+    }).rejects.toThrow('End time cannot be earlier than start time.')
+  })
+  
+  test('Should not be able to create a doctor info with startAt invalid', async () => {
+
+    const userId = randomUUID()
+    await doctorRepository.save({
+      crm: '111111',
+      email: 'email@test.com',
+      id: randomUUID(),
+      specialityId: randomUUID(),
+      userId
+    })
+
+    const doctorInfo: DoctorInfoRequest = {
+      startAt: '99:59',
+      endAt: dayjs().startOf('day').add(11, 'hour').format('HH:mm'),
+      price: 150,
+      duration: 30,
+    }
+    
+    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository)
+
+    expect(async () => {
+      await createDoctorInfoUseCase.execute(doctorInfo, userId)
+    }).rejects.toThrow('Invalid startAt.')
+  })
+  
+  test('Should not be able to create a doctor info with endAt invalid', async () => {
+
+    const userId = randomUUID()
+    await doctorRepository.save({
+      crm: '111111',
+      email: 'email@test.com',
+      id: randomUUID(),
+      specialityId: randomUUID(),
+      userId
+    })
+
+    const doctorInfo: DoctorInfoRequest = {
+      startAt: dayjs().startOf('day').add(15, 'hour').format('HH:mm'),
+      endAt: '99:00',
+      price: 150,
+      duration: 30,
+    }
+    
+    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository)
+
+    expect(async () => {
+      await createDoctorInfoUseCase.execute(doctorInfo, userId)
+    }).rejects.toThrow('Invalid endAt.')
   })
 })

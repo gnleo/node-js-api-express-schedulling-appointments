@@ -1,4 +1,5 @@
 import { CustomError } from "../../../../error/custom-error"
+import { DoctorInfo } from "../../entities/doctor-info-entity"
 import { IDoctorRepository } from "../../repository/doctor-repository"
 
 export type DoctorInfoRequest = {
@@ -20,5 +21,12 @@ export class CreateDoctorInfoUseCase {
     if(!doctor){
       throw new CustomError('Doctor does not exists.')
     }
+
+    const doctorInfo = DoctorInfo.create({
+      ...data,
+      doctorId: doctor.id!
+    })
+
+    return doctorInfo
   }
 }

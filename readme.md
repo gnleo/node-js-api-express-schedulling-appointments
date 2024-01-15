@@ -33,5 +33,5 @@
   - [x] O médico deve estar cadastrado
   - [] O médico deve estar autenticado na aplicação
   - [] Não deve ser possível ter mais de um registro de informação por médico
-  - [] O horário de término não deve ser menor que o horário de início de atendimento
-  - [] A duração da consulta não pode ser menor ou igual a zero
+  - [x] O horário de término não deve ser menor que o horário de início de atendimento
+  - [x] A duração da consulta não pode ser menor ou igual a zero
