@@ -1,5 +1,6 @@
 import { CustomError } from "../../../../error/custom-error"
 import { DoctorInfo } from "../../entities/doctor-info-entity"
+import { IDoctorInfoRepository } from "../../repository/doctor-info-repository"
 import { IDoctorRepository } from "../../repository/doctor-repository"
 
 export type DoctorInfoRequest = {
@@ -12,7 +13,8 @@ export type DoctorInfoRequest = {
 export class CreateDoctorInfoUseCase { 
 
   constructor(
-    private doctorRepository: IDoctorRepository
+    private doctorRepository: IDoctorRepository,
+    private doctorInfoRepository: IDoctorInfoRepository,
   ){}
 
   async execute(data: DoctorInfoRequest, userId: string){
@@ -27,6 +29,7 @@ export class CreateDoctorInfoUseCase {
       doctorId: doctor.id!
     })
 
-    return doctorInfo
+    const doctorInfoCreated = await this.doctorInfoRepository.save(doctorInfo)
+    return doctorInfoCreated
   }
 }

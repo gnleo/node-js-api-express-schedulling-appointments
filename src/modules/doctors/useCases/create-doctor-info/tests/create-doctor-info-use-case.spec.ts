@@ -2,14 +2,19 @@ import dayjs from "dayjs";
 import { describe, test, expect, beforeAll } from "vitest";
 import { CreateDoctorInfoUseCase, DoctorInfoRequest } from "../create-doctor-info-use-case";
 import { IDoctorRepository } from "../../../repository/doctor-repository";
-import { DoctorMemoryRepository } from "../../../repository/implementations/doctor-memory-repository";
+import { DoctorMemoryRepository } from "../../../repository/implementations/in-memory/doctor-memory-repository";
 import { randomUUID } from "crypto";
+import { IDoctorInfoRepository } from "../../../repository/doctor-info-repository";
+import { DoctorInfoMemoryRepository } from "../../../repository/implementations/in-memory/doctor-info-memory-repository";
+import { DoctorInfo } from "../../../entities/doctor-info-entity";
 
 describe('🥼ℹ️ Doctor info useCase', () => {
   let doctorRepository: IDoctorRepository
+  let doctorInfoRepository: IDoctorInfoRepository
   
   beforeAll(() => {
     doctorRepository = new DoctorMemoryRepository()
+    doctorInfoRepository = new DoctorInfoMemoryRepository()
   })
   
   test('Should not be able to create a doctor info if doctor does not exists', async () => {
@@ -20,7 +25,7 @@ describe('🥼ℹ️ Doctor info useCase', () => {
       duration: 30,
     }
     
-    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository)
+    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository, doctorInfoRepository)
     
     expect(async () => {
       await createDoctorInfoUseCase.execute(doctorInfo, 'INVALID_USER_ID')
@@ -45,7 +50,7 @@ describe('🥼ℹ️ Doctor info useCase', () => {
       duration: 30,
     }
     
-    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository)
+    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository, doctorInfoRepository)
 
     expect(async () => {
       await createDoctorInfoUseCase.execute(doctorInfo, userId)
@@ -70,7 +75,7 @@ describe('🥼ℹ️ Doctor info useCase', () => {
       duration: 30,
     }
     
-    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository)
+    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository, doctorInfoRepository)
 
     expect(async () => {
       await createDoctorInfoUseCase.execute(doctorInfo, userId)
@@ -95,10 +100,34 @@ describe('🥼ℹ️ Doctor info useCase', () => {
       duration: 30,
     }
     
-    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository)
+    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository, doctorInfoRepository)
 
     expect(async () => {
       await createDoctorInfoUseCase.execute(doctorInfo, userId)
     }).rejects.toThrow('Invalid endAt.')
+  })
+
+  test('Should be able to create a new doctor info', async () => {
+    const userId = randomUUID()
+    await doctorRepository.save({
+      crm: '111111',
+      email: 'email@test.com',
+      id: randomUUID(),
+      specialityId: randomUUID(),
+      userId
+    })
+
+    const doctorInfo: DoctorInfoRequest = {
+      startAt: dayjs().startOf('day').add(14, 'hour').format('HH:mm'),
+      endAt: dayjs().startOf('day').add(15, 'hour').format('HH:mm'),
+      price: 150,
+      duration: 30,
+    }
+    
+    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository, doctorInfoRepository)
+    const doctorCreated = await createDoctorInfoUseCase.execute(doctorInfo, userId)
+
+    expect(doctorCreated).toHaveProperty('id')
+    expect(doctorCreated).toBeInstanceOf(DoctorInfo)
   })
 })
