@@ -130,4 +130,30 @@ describe('🥼ℹ️ Doctor info useCase', () => {
     expect(doctorCreated).toHaveProperty('id')
     expect(doctorCreated).toBeInstanceOf(DoctorInfo)
   })
+  
+  test('Should be able to update a exists doctor info', async () => {
+    const userId = randomUUID()
+    await doctorRepository.save({
+      crm: '111111',
+      email: 'email@test.com',
+      id: randomUUID(),
+      specialityId: randomUUID(),
+      userId
+    })
+
+    const doctorInfo: DoctorInfoRequest = {
+      startAt: dayjs().startOf('day').add(14, 'hour').format('HH:mm'),
+      endAt: dayjs().startOf('day').add(15, 'hour').format('HH:mm'),
+      price: 150,
+      duration: 30,
+    }
+    
+    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(doctorRepository, doctorInfoRepository)
+    const doctorCreated = await createDoctorInfoUseCase.execute(doctorInfo, userId)
+    const doctorUpdated = await createDoctorInfoUseCase.execute({...doctorInfo, price: 200}, userId)
+
+    expect(doctorCreated.id).toBe(doctorUpdated.id)
+    expect(doctorCreated.price).equal(150)
+    expect(doctorUpdated.price).equal(200)
+  })
 })

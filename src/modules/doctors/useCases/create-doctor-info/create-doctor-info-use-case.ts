@@ -29,7 +29,7 @@ export class CreateDoctorInfoUseCase {
       doctorId: doctor.id!
     })
 
-    const doctorInfoCreated = await this.doctorInfoRepository.save(doctorInfo)
+    const doctorInfoCreated = await this.doctorInfoRepository.saveOrUpdate(doctorInfo)
     return doctorInfoCreated
   }
 }
