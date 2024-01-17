@@ -106,7 +106,7 @@
                         "description": "Informações do médico criado com sucesso"
                     },
                     "400": {
-                        "description": "Erro de cadastro"
+                        "description": "Erro de cadastro das informações"
                     }
                 }
             }

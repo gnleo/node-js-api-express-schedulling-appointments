@@ -21,7 +21,7 @@ export class CreateDoctorInfoUseCase {
     const doctor = await this.doctorRepository.findByUserId(userId)
     
     if(!doctor){
-      throw new CustomError('Doctor does not exists.')
+      throw new CustomError('Doctor does not exists.', 400)
     }
 
     const doctorInfo = DoctorInfo.create({

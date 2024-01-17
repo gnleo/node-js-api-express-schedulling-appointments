@@ -12,9 +12,15 @@ export class CreateDoctorInfoController {
   async handle(request: Request, response: Response){
     const { body, userId } = request
 
-    const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(this.doctorRepository, this.doctorInfoRepository)
-    const result = await createDoctorInfoUseCase.execute(body, userId)
+    try {
+      const createDoctorInfoUseCase = new CreateDoctorInfoUseCase(this.doctorRepository, this.doctorInfoRepository)
+      const result = await createDoctorInfoUseCase.execute(body, userId)
+      return response.json(result)
+    } catch (error: any) {
+      return response.status(error.statusCode).json({
+        err: error.message
+      })
+    }
     
-    return response.json(result)
   }
 }
