@@ -79,6 +79,9 @@
                     },
                     "400": {
                         "description": "Erro de cadastro"
+                    },
+                    "422": {
+                        "description": "Erro de validação dos atributos de schema"
                     }
                 }
             }
