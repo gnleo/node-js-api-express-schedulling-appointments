@@ -11,13 +11,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
   password  String
-  username  String   @unique
-  isAdmin   Boolean  @default(false)
-  createdAt DateTime @default(now())
+  username  String    @unique
+  isAdmin   Boolean   @default(false)
+  createdAt DateTime  @default(now())
   Doctor    Doctor?
+  Patient   Patient[]
 
   @@map("users")
 }
@@ -58,4 +59,15 @@ model DoctorInfo {
   Doctor Doctor @relation(fields: [doctorId], references: [id])
 
   @@map("doctor_info")
+}
+
+model Patient {
+  id       String @id @default(uuid())
+  document String @unique
+  email    String @unique
+  userId   String
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("patient")
 }
