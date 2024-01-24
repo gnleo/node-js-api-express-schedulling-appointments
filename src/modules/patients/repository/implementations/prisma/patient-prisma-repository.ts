@@ -13,4 +13,17 @@ export class PatientPrismaRepository implements IPatientRepository {
    return patient
   }
 
+  async findByDocumentOrEmail(document: string, email: string): Promise<Patient | null> {
+    const patient = await prisma.patient.findFirst({
+      where: {
+        OR: [
+          { email },
+          { document }
+        ]
+      }
+    })
+
+    return patient
+  }
+
 }

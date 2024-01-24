@@ -33,6 +33,12 @@ export class CreatePatientUseCase {
 
     const userCreated = await this.userRepository.save(user)
 
+    const alreadyExistsPatient = await this.patientRepository.findByDocumentOrEmail(data.document, data.email)
+
+    if(alreadyExistsPatient){ 
+      throw new CustomError('Patient already exists', 400, 'PATIENT_EXISTS_ERROR')
+    }
+    
     const patient = await Patient.create({email: data.email, document: data.document, userId: userCreated.id})
     const patientCreated = await this.patientRepository.save(patient)
     
