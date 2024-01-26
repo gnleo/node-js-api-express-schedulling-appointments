@@ -29,9 +29,21 @@
 
 ### **Cadastro de informações do médico**
 
-- [] Deve ser possível cadastrar informações de um médico
+- [x] Deve ser possível cadastrar informações de um médico
   - [x] O médico deve estar cadastrado
-  - [] O médico deve estar autenticado na aplicação
-  - [] Não deve ser possível ter mais de um registro de informação por médico
+  - [x] O médico deve estar autenticado na aplicação
+  - [x] Não deve ser possível ter mais de um registro de informação por médico
   - [x] O horário de término não deve ser menor que o horário de início de atendimento
   - [x] A duração da consulta não pode ser menor ou igual a zero
+
+### **Cadastro de agendamentos**
+
+- [] Deve ser possível cadastrar um agendamento
+  - [] O paciente precisa estar cadastrado no sistema
+  - [] O paciente deve estar autenticado na aplicação
+  - [] O médico selecionado deve estar cadastrado no sistema
+  - [] O médico escolhido deve ter disponibilidade para o horário selecionado
+    - [] O médico deve ter disponibilidade para o dia da semana escolhido
+    - [] O horário escolhido deve estar entre o horário de atendimento do médico
+    - [] Não deve ser possível cadastrar um agendamento, se já existir outro agendamento para o mesmo médico com a mesma data e horário selecionado
+    - [] O paciente não deve ter algum agendamento cadastrado para o mesmo dia e horário escolhido
