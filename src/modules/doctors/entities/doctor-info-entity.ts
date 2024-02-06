@@ -15,8 +15,6 @@ export class DoctorInfo {
   id: string
   duration: number
   price: number
-  startAt: string
-  endAt: string
   doctorId: string
 
   private constructor(props: DoctorInfoProps){
@@ -33,8 +31,6 @@ export class DoctorInfo {
     this.doctorId = props.doctorId
     this.duration = props.duration
     this.price = props.price
-    this.startAt = props.startAt
-    this.endAt = props.endAt
   }
 
   static create(props: DoctorInfoProps){

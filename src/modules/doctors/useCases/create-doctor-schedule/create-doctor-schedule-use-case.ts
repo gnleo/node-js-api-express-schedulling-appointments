@@ -23,7 +23,7 @@ export class CreateDoctorScheduleUseCase {
 
   async execute(data: CreateDoctorScheduleRequest, userId: string) {
 
-    const doctor = await this.doctorRepository.findById(userId)
+    const doctor = await this.doctorRepository.findByUserId(userId)
 
     if(!doctor) {
       throw new CustomError('Doctor does not exists.', 400)
