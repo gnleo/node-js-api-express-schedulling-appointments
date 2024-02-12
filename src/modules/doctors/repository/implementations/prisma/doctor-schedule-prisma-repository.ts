@@ -5,8 +5,16 @@ import { IDoctorScheduleRepository } from "../../doctor-schedule-repository";
 
 export class DoctorSchedulePrismaRepository implements IDoctorScheduleRepository{
   async save(data: DoctorSchedule): Promise<void> {
-  await prisma.doctorSchedules.createMany({
-      data: DoctorScheduleMapper.entityToPrisma(data)
-    })
+    await prisma.$transaction([
+      prisma.doctorSchedules.deleteMany({
+        where: {
+          doctorId: data.doctorId
+        }
+      }),
+
+      prisma.doctorSchedules.createMany({
+        data: DoctorScheduleMapper.entityToPrisma(data)
+      })
+    ])
   }
 }
