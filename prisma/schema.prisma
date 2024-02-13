@@ -45,6 +45,7 @@ model Doctor {
   speciality      Speciality        @relation(fields: [specialityId], references: [id])
   DoctorInfo      DoctorInfo[]
   DoctorSchedules DoctorSchedules[]
+  Appointment     Appointment[]
 
   @@map("doctors")
 }
@@ -66,7 +67,8 @@ model Patient {
   email    String @unique
   userId   String
 
-  user User @relation(fields: [userId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
+  Appointment Appointment[]
 
   @@map("patient")
 }
@@ -81,4 +83,18 @@ model DoctorSchedules {
   doctor Doctor @relation(fields: [doctorId], references: [id])
 
   @@map("doctor_schedules")
+}
+
+model Appointment {
+  doctor  Doctor  @relation(fields: [doctorId], references: [id])
+  patient Patient @relation(fields: [patientId], references: [id])
+
+  id        String   @id @default(uuid())
+  doctorId  String
+  patientId String
+  isFinish  Boolean  @default(false)
+  date      DateTime
+  note      String
+
+  @@map("appointment")
 }
