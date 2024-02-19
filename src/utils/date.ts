@@ -27,6 +27,10 @@ function dateToString(date: Date){
   return dayjs(date).format('YYYY-MM-DD').toString()
 }
 
+export function toDate (date: Date) {
+  return dayjs(date).toDate()
+}
+
 export { 
   validateTime, 
   formatDateHour, 

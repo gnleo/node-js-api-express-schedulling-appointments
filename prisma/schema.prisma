@@ -94,7 +94,7 @@ model Appointment {
   patientId String
   isFinish  Boolean  @default(false)
   date      DateTime
-  note      String
+  note      String?
 
   @@map("appointment")
 }
