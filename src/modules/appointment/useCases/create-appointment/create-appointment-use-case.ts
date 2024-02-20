@@ -1,5 +1,5 @@
 import { CustomError } from "../../../../error/custom-error"
-import { dateToString, formatDate, getDayOfWeek, toDate } from "../../../../utils/date"
+import { dateToString, formatDateUTC, getDayOfWeek, toDate } from "../../../../utils/date"
 import { IDoctorRepository } from "../../../doctors/repository/doctor-repository"
 import { IDoctorScheduleRepository } from "../../../doctors/repository/doctor-schedule-repository"
 import { IPatientRepository } from "../../../patients/repository/patient-repository"
@@ -41,7 +41,7 @@ export class CreateAppointmentUseCase {
       throw new CustomError('Doctor does not attend that day.', 400)
     }
 
-    const dateFormat = formatDate(data.date, 'YYYY-MM-DD HH:mm')
+    const dateFormat = formatDateUTC(data.date, 'YYYY-MM-DD HH:mm')
 
     const existsAppointmentDoctor = await this.appointmentRepository.findAppointmentByDoctorAndDateTime(alreadyDoctorExists.id!, dateFormat)
 

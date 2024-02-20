@@ -1,4 +1,7 @@
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc)
 
 function validateTime(time: string){
   return dayjs(formatDateHour(time)).isValid()
@@ -23,6 +26,10 @@ function formatDate(date: Date, format: string){
   return dayjs(date).format(format)
 }
 
+function formatDateUTC(date: Date, format: string){
+  return dayjs(date).utc().format(format)
+}
+
 function dateToString(date: Date){
   return dayjs(date).format('YYYY-MM-DD').toString()
 }
@@ -37,5 +44,6 @@ export {
   compareEndTimeIsAfter, 
   getDayOfWeek, 
   formatDate,
-  dateToString
+  dateToString,
+  formatDateUTC
 }

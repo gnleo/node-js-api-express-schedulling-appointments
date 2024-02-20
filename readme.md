@@ -38,12 +38,12 @@
 
 ### **Cadastro de agendamentos**
 
-- [] Deve ser possível cadastrar um agendamento
-  - [] O paciente precisa estar cadastrado no sistema
-  - [] O paciente deve estar autenticado na aplicação
-  - [] O médico selecionado deve estar cadastrado no sistema
-  - [] O médico escolhido deve ter disponibilidade para o horário selecionado
-    - [] O médico deve ter disponibilidade para o dia da semana escolhido
-    - [] O horário escolhido deve estar entre o horário de atendimento do médico
-    - [] Não deve ser possível cadastrar um agendamento, se já existir outro agendamento para o mesmo médico com a mesma data e horário selecionado
-    - [] O paciente não deve ter algum agendamento cadastrado para o mesmo dia e horário escolhido
+- [x] Deve ser possível cadastrar um agendamento
+  - [x] O paciente precisa estar cadastrado no sistema
+  - [x] O paciente deve estar autenticado na aplicação
+  - [x] O médico selecionado deve estar cadastrado no sistema
+  - [x] O médico escolhido deve ter disponibilidade para o horário selecionado
+    - [x] O médico deve ter disponibilidade para o dia da semana escolhido
+    - [x] O horário escolhido deve estar entre o horário de atendimento do médico
+    - [x] Não deve ser possível cadastrar um agendamento, se já existir outro agendamento para o mesmo médico com a mesma data e horário selecionado
+    - [x] O paciente não deve ter algum agendamento cadastrado para o mesmo dia e horário escolhido
