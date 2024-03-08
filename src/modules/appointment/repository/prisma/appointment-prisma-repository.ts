@@ -33,6 +33,7 @@ export class AppointmentPrismaRepository implements IAppointmentRepository {
         doctorId: data.doctorId,
         patientId: data.patientId,
         date: data.date,
+        note: data.note
       }
     })
   }

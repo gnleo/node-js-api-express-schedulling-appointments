@@ -1,10 +1,17 @@
 import { prisma } from "../../../../../infra/database/prisma-config";
 import { Patient } from "../../../entities/patient-entity";
-import { IPatientRepository } from "../../patient-repository";
+import { IPatientRepository, PatientWithName } from "../../patient-repository";
 
 export class PatientPrismaRepository implements IPatientRepository {
-  async findById(id: string): Promise<Patient | null> {
-    const patient = await prisma.patient.findFirst({ where: { userId: id } })
+  async findById(id: string): Promise<PatientWithName | null> {
+    const patient = await prisma.patient.findFirst({ 
+      where: { userId: id },
+      include: { user: {
+        select: {
+          name: true
+        }
+      }} 
+    })
     return patient
   }
 

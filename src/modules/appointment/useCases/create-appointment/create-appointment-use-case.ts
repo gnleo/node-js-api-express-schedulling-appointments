@@ -1,5 +1,6 @@
 import { CustomError } from "../../../../error/custom-error"
-import { dateToString, formatDateUTC, getDayOfWeek, toDate } from "../../../../utils/date"
+import { IMailProvider } from "../../../../infra/providers/mail/mail-provider"
+import { dateToString, formatDate, formatDateUTC, getDayOfWeek, toDate } from "../../../../utils/date"
 import { IDoctorRepository } from "../../../doctors/repository/doctor-repository"
 import { IDoctorScheduleRepository } from "../../../doctors/repository/doctor-schedule-repository"
 import { IPatientRepository } from "../../../patients/repository/patient-repository"
@@ -18,6 +19,7 @@ export class CreateAppointmentUseCase {
     private doctorRepository: IDoctorRepository,
     private doctorScheduleRepository: IDoctorScheduleRepository,
     private appointmentRepository: IAppointmentRepository,
+    private mailProvider: IMailProvider
   ){}
   
   async execute (data: CreateAppointmentRequest, userId: string) {
@@ -35,7 +37,7 @@ export class CreateAppointmentUseCase {
 
     const dayOfWeek = getDayOfWeek(dateToString(data.date))
 
-    const doctorSchedule = await this.doctorScheduleRepository.findByDayOfWeekAndDoctorId(data.doctorId, dayOfWeek)
+    const doctorSchedule = await this.doctorScheduleRepository.findByDayOfWeekAndDoctorId(alreadyDoctorExists.id!, dayOfWeek)
 
     if(!doctorSchedule){
       throw new CustomError('Doctor does not attend that day.', 400)
@@ -57,10 +59,17 @@ export class CreateAppointmentUseCase {
 
     const appointment = Appointment.create({
       date: toDate(data.date),
-      doctorId: data.doctorId,
-      patientId: alreadyPatientExists.userId
+      doctorId: alreadyDoctorExists.id!,
+      patientId: alreadyPatientExists.id
     })
 
     await this.appointmentRepository.save(appointment)
+    
+    await this.mailProvider.sendMail({
+      to: alreadyPatientExists.email,
+      from: 'Agendamento de consulta <noreply@agendamento.com.br>',
+      subject: 'Agendamento de consulta',
+      html: `Olá ${alreadyPatientExists.user.name}! </br> Gostaria de confirmar sua consulta agendada para o dia ${formatDate(data.date, 'DD/MM/YYYY')} às ${formatDate(data.date, 'HH:mm')}, com o Dr ${alreadyDoctorExists.user.name}`
+    })
   }
 }

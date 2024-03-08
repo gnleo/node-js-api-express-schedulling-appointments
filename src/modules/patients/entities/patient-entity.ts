@@ -8,6 +8,7 @@ export type PatientProps = {
 }
 
 export class Patient {
+  id: string
   email: string
   document: string
   userId: string
@@ -22,6 +23,7 @@ export class Patient {
       throw new CustomError('Document invalid.')
     }
 
+    this.id = randomUUID()
     this.email = props.email
     this.document = props.document
     this.userId = props.userId
