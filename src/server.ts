@@ -5,6 +5,8 @@ import swaggerUI from 'swagger-ui-express'
 import swaggerDocument from '../swagger.json'
 import { router } from './routes'
 
+import './infra/cron/notification-appointments-day'
+
 const app = express()
 
 app.use(express.json())
